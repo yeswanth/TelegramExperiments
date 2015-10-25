@@ -55,5 +55,9 @@ def get_updates(offset):
     if(len(updates) > 0):
         update_offset(updates[-1].update_id)
 
-get_updates(get_offset())
+import time
+while True:
+    get_updates(get_offset())
+    print "Running"
+    time.sleep(5)
 
