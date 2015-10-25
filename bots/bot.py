@@ -1,6 +1,8 @@
 from twx.botapi import TelegramBot, ReplyKeyboardMarkup
 from production_settings import key,user_id
 
+OFFSET_FILE = "data.txt"
+
 """
 Setup the bot
 """
@@ -9,29 +11,43 @@ bot = TelegramBot(key)
 bot.update_bot_info().wait()
 print(bot.username)
 
+print bot.set_webhook('http://45.55.196.234:8443/')
+
+
 """
 Send a message to a user
 """
 
-result = bot.send_message(user_id, 'test message body').wait()
-print(result)
+#result = bot.send_message(user_id, 'test message body').wait()
+#print(result)
+
+def update_offset(offset):
+    open(OFFSET_FILE,"w").write(str(offset))
+
+def get_offset():
+    try:
+        offset = open(OFFSET_FILE,"r").read().strip()
+        return int(offset)
+    except IOError,e:   
+        return 0
+
+def process(text):
+    print text 
+    if text == "/goodmorning":
+       bot.send_message(user_id, "Good Morning!").wait()
 
 """
 Get updates sent to the bot
 """
-updates = bot.get_updates().wait()
-for update in updates:
-    print(update)
+def get_updates(offset):
+    if offset == 0:
+        updates = bot.get_updates().wait()
+    else:
+        updates = bot.get_updates(offset=offset+1,limit=5).wait()
+    for update in updates:
+        process(update.message.text)
+    if(len(updates) > 0):
+        update_offset(updates[-1].update_id)
 
-"""
-Use a custom keyboard
-"""
-keyboard = [
-    ['7', '8', '9'],
-    ['4', '5', '6'],
-    ['1', '2', '3'],
-         ['0']
-]
-reply_markup = ReplyKeyboardMarkup.create(keyboard)
+get_updates(get_offset())
 
-bot.send_message(user_id, 'please enter a number', reply_markup=reply_markup).wait()
