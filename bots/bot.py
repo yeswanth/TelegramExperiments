@@ -37,10 +37,14 @@ def get_offset():
     except IOError,e:   
         return 0
 
-def process(text):
+def process(chat_id,text):
     print text 
-    if text == "/goodmorning":
-       bot.send_message(user_id, get_random_good_morning()).wait()
+    if text == "/goodmorning": 
+        print "Matched" 
+        bot.send_message(chat_id, get_random_good_morning()).wait()
+    elif text == '/goodmorning@GooodMorningBot':
+        print "Matched" 
+        bot.send_message(chat_id, get_random_good_morning()).wait()
 
 """
 Get updates sent to the bot
@@ -51,7 +55,8 @@ def get_updates(offset):
     else:
         updates = bot.get_updates(offset=offset+1,limit=5).wait()
     for update in updates:
-        process(update.message.text)
+        print update,update.message.chat.id
+        process(update.message.chat.id,update.message.text)
     if(len(updates) > 0):
         update_offset(updates[-1].update_id)
 
