@@ -1,3 +1,6 @@
 env/
 production_settings.py
 *.swp
+*.pyc
+db.sqlite3
+

@@ -1,0 +1,3 @@
+TELEGRAM_KEY = ""
+SSL_CERTIFICATE_LOCATION = ""
+APPLICATION_URL = "http://localhost.com"
