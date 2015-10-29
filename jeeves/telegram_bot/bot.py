@@ -1,15 +1,17 @@
 import telegram
 from django.core.urlresolvers import reverse
-from django.conf.settings import TELEGRAM_KEY,SSL_CERTIFICATE_LOCATION,APPLICATION_URL
+from django.conf import settings 
 
 class Bot(object):
     def __init__(self):
-        self.bot = telegram.Bot(key)
+        self.bot = telegram.Bot(settings.TELEGRAM_KEY)
   
     def send_message(self,chat_id,message):
-        bot.sendMessage(chat_id=chat_id,
+        print "Sending Message"
+        self.bot.sendMessage(chat_id=chat_id,
                             text=message)
 
     def configure_webhook(self):
-        bot.setWebhook(APPLICATION_URL) 
-
+        webhook_url = settings.APPLICATION_URL+reverse('telegram_bot:webhook',args=(settings.TELEGRAM_KEY,)) 
+        print webhook_url
+        self.bot.setWebhook(webhook_url,open(settings.SSL_CERTIFICATE_LOCATION,'rb'))
