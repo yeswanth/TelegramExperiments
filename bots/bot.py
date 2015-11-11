@@ -55,7 +55,7 @@ def get_updates(offset):
     else:
         updates = bot.get_updates(offset=offset+1,limit=5).wait()
     for update in updates:
-        print update,update.message.chat.id
+        #print update,update.message.chat.id
         process(update.message.chat.id,update.message.text)
     if(len(updates) > 0):
         update_offset(updates[-1].update_id)

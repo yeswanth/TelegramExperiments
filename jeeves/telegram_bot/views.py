@@ -13,5 +13,6 @@ def webhook(request,token):
         json_body = json.loads(body)
         update = telegram.update.Update.de_json(json_body)
         bot = Bot()
-        bot.send_message(update.message.chat_id,'Hello, there')
+        print update.message.text
+        bot.process(update.message.chat_id,update.message.text)
     return HttpResponse("Thank You.")
