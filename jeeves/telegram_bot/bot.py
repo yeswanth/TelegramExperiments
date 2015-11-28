@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings 
 import random
 import os
+from .models import HomeWorkModel
 
 class Bot(object):
     def __init__(self):
@@ -28,9 +29,14 @@ class Bot(object):
             print "Matched"
             self.send_message(chat_id, get_random_good_morning())
         elif text == '/homework':
-            pass
+            self.send_message(chat_id, get_random_home_work())
         elif text == '/homework@GoodMorningBot':
-            pass
+            self.send_message(chat_id, get_random_home_work())
+
+def get_random_home_work():
+    homeworks = HomeWorkModel.objects.all()
+    homework = homeworks.order_by('?').first()
+    return homework.desc
 
 def get_random_good_morning():
     messages = open(settings.GOOD_MORNING_FILE).read().split('\n\n')

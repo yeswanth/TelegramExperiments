@@ -3,6 +3,6 @@ from .models import HomeWorkModel
 
 # Register your models here.
 class HomeWorkModelAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('desc','tag')
 
 admin.site.register(HomeWorkModel,HomeWorkModelAdmin)
