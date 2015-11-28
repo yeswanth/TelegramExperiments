@@ -35,8 +35,11 @@ class Bot(object):
 
 def get_random_home_work():
     homeworks = HomeWorkModel.objects.all()
-    homework = homeworks.order_by('?').first()
-    return homework.desc
+    if homeworks.exists():
+        homework = homeworks.order_by('?').first()
+        return homework.desc
+    else: 
+        return 'Buy yourself an icecream from you! You have no pending homework'
 
 def get_random_good_morning():
     messages = open(settings.GOOD_MORNING_FILE).read().split('\n\n')
